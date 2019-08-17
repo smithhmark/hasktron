@@ -4,14 +4,14 @@ module Lib
   , smoosh
   , logistic
   , perceptron
-  , free_perceptron
+  , freePerceptron
   ) where
 
 someMsg :: String
 someMsg = "someMsg"
 
 someFunc :: IO ()
-someFunc = putStrLn $ someMsg
+someFunc = putStrLn someMsg
 
 logistic :: Double -> Double
 logistic x = e / d
@@ -23,9 +23,9 @@ smoosh :: Double -> Double
 smoosh = undefined
 
 perceptron :: [Double] -> Double -> [Double] -> Double
-perceptron ws b as = logistic $ free_perceptron ws b as
+perceptron ws b as = logistic $ freePerceptron ws b as
 
-free_perceptron :: [Double] -> Double -> [Double] -> Double
-free_perceptron ws b as = s - b
+freePerceptron :: [Double] -> Double -> [Double] -> Double
+freePerceptron ws b as = s - b
   where
     s = sum $ zipWith (*) ws as
