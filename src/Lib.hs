@@ -3,6 +3,8 @@ module Lib
   , someMsg
   , smoosh
   , logistic
+  , perceptron
+  , free_perceptron
   ) where
 
 someMsg :: String
@@ -21,6 +23,9 @@ smoosh :: Double -> Double
 smoosh = undefined
 
 perceptron :: [Double] -> Double -> [Double] -> Double
-perceptron ws b as = b - s
+perceptron ws b as = logistic $ free_perceptron ws b as
+
+free_perceptron :: [Double] -> Double -> [Double] -> Double
+free_perceptron ws b as = s - b
   where
     s = sum $ zipWith (*) ws as
