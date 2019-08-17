@@ -23,16 +23,17 @@ logistic x = e / d
 smoosh :: Double -> Double
 smoosh = undefined
 
-perceptron :: [Double] -> Double -> [Double] -> Double
+type Neuron = [Double] -> Double -> [Double] -> Double
+
+perceptron :: Neuron
 perceptron ws b as = logistic $ freePerceptron ws b as
 
-freePerceptron :: [Double] -> Double -> [Double] -> Double
+freePerceptron :: Neuron
 freePerceptron ws b as = s - b
   where
     s = sum $ zipWith (*) ws as
 
-
-nextLayer :: ([Double] -> Double -> [Double] -> Double) -> [Double] -> [[Double]] -> [Double] -> [Double]
+nextLayer :: Neuron -> [Double] -> [[Double]] -> [Double] -> [Double]
 nextLayer pfn as wss bs = foldr op [] $ zip wss bs
   where
-          op (ws, b) acc = pfn ws b as : acc
+    op (ws, b) acc = pfn ws b as : acc
