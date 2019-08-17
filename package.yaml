@@ -47,3 +47,4 @@ tests:
     dependencies:
     - hasktron
     - hspec
+    - QuickCheck
