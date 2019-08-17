@@ -5,6 +5,7 @@ module Lib
   , logistic
   , perceptron
   , freePerceptron
+  , nextLayer
   ) where
 
 someMsg :: String
@@ -29,3 +30,9 @@ freePerceptron :: [Double] -> Double -> [Double] -> Double
 freePerceptron ws b as = s - b
   where
     s = sum $ zipWith (*) ws as
+
+
+nextLayer :: ([Double] -> Double -> [Double] -> Double) -> [Double] -> [[Double]] -> [Double] -> [Double]
+nextLayer pfn as wss bs = foldr op [] $ zip wss bs
+  where
+          op (ws, b) acc = pfn ws b as : acc
