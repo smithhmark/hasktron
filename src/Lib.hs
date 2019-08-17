@@ -11,16 +11,16 @@ someMsg = "someMsg"
 someFunc :: IO ()
 someFunc = putStrLn $ someMsg
 
-logistic :: Float -> Float
+logistic :: Double -> Double
 logistic x = e / d
   where
     e = exp x
     d = e + 1
 
-smoosh :: Float -> Float
+smoosh :: Double -> Double
 smoosh = undefined
 
-perceptron :: [Float] -> Float -> [Float] -> Float
+perceptron :: [Double] -> Double -> [Double] -> Double
 perceptron ws b as = b - s
   where
     s = sum $ zipWith (*) ws as
