@@ -1,5 +1,6 @@
 module Lib
     ( someFunc
+    , someMsg
     ) where
 
 someMsg :: String
