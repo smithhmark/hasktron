@@ -14,11 +14,14 @@ someMsg = "someMsg"
 someFunc :: IO ()
 someFunc = putStrLn someMsg
 
-logistic :: Double -> Double
-logistic x = e / d
+logisticFull :: Double -> Double -> Double -> Double -> Double
+logisticFull max k x0 x = max / d
   where
-    e = exp x
-    d = e + 1
+    e = exp (-1 * k * (x - x0))
+    d = 1 + e
+
+logistic :: Double -> Double
+logistic x = logisticFull 1.0 1.0 0.0 x
 
 smoosh :: Double -> Double
 smoosh = undefined
