@@ -16,3 +16,7 @@ type Activations = [Double]
 type Bias = Double
 type Biases = [Double]
 
+data Layer = Layer
+  { weights :: [Weights]
+  , biases  :: Biases
+  } deriving (Show)

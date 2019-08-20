@@ -4,9 +4,10 @@ module Neuron
   , freePerceptron
   , nextLayer
   , Neuron
+  , quadraticCost
   ) where
 
-import NNTypes
+import           NNTypes
 
 type Neuron = Weights -> Bias -> Activations -> Double
 
@@ -18,7 +19,6 @@ logisticFull max k x0 x = max / d
 
 logistic :: Double -> Double
 logistic x = logisticFull 1.0 1.0 0.0 x
-
 
 perceptron :: Neuron
 perceptron ws b as = logistic $ freePerceptron ws b as
@@ -33,7 +33,7 @@ nextLayer pfn as wss bs = foldr op [] $ zip wss bs
   where
     op (ws, b) acc = pfn ws b as : acc
 
-data Layer = Layer
-  { weights :: [Weights]
-  , biases  :: Biases
-  } deriving (Show)
+quadraticCost :: [Double] -> Activations -> Double
+quadraticCost ys as = ss / 2.0
+  where
+    ss = sum . map (** 2) $ zipWith (-) ys as

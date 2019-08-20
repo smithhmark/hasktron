@@ -57,3 +57,24 @@ spec = do
       let wss = [[1.0, 2.0], [3.0, 4.0]]
       let bs = [5.0, 6.0]
       nextLayer (freePerceptron) as wss bs `shouldBe` [0.0, 5.0]
+  describe "nextLayer" $ do
+    it "plays nice" $ do
+      let as = [1.0, 2.0]
+      let wss = [[1.0, 2.0], [3.0, 4.0]]
+      let bs = [5.0, 6.0]
+      nextLayer (freePerceptron) as wss bs `shouldBe` [0.0, 5.0]
+  describe "quadraticCost" $ do
+    it "find zero cost when expected = rcvd" $ do
+      let as = [1.0, 2.0]
+      let expected = 0.0
+      quadraticCost as as `shouldBe` expected
+    it "find 0.5 cost when one position differs by 1" $ do
+      let ys = [0.0, 0.0]
+      let as = [1.0, 0.0]
+      let expected = 0.5
+      quadraticCost ys as `shouldBe` expected
+    it "find 1.0 cost when two positions differ by 1 each" $ do
+      let ys = [0.0, 0.0]
+      let as = [1.0, 1.0]
+      let expected = 1.0
+      quadraticCost ys as `shouldBe` expected
