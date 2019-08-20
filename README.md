@@ -14,6 +14,7 @@ $ hfmt -w <filename>
 $ hlint <filename>
 ```
 
+### Goals
 #### short term:
   * Feed Forward evaluation
   * Backwards Propegation learning
@@ -22,6 +23,8 @@ $ hlint <filename>
 #### Medium goals:
   * solution (and performance profiling) of some trivial problems, eg
     * hand written numeral recognition
+  * separation of NN code from application
+  * share code publicly
 #### Longer term:
   * use of genetic programming/genetic Algorithms to explore nn-topologies
   * exploration of performant implementations
