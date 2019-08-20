@@ -3,7 +3,12 @@ module Neuron
   , perceptron
   , freePerceptron
   , nextLayer
+  , Neuron
   ) where
+
+import NNTypes
+
+type Neuron = Weights -> Bias -> Activations -> Double
 
 logisticFull :: Double -> Double -> Double -> Double -> Double
 logisticFull max k x0 x = max / d
@@ -14,13 +19,6 @@ logisticFull max k x0 x = max / d
 logistic :: Double -> Double
 logistic x = logisticFull 1.0 1.0 0.0 x
 
-type Weights = [Double]
-
-type Biases = [Double]
-type Bias = Double
-type Activations = [Double]
-
-type Neuron = Weights -> Bias -> Activations -> Double
 
 perceptron :: Neuron
 perceptron ws b as = logistic $ freePerceptron ws b as
