@@ -2,7 +2,6 @@ module Neuron
   ( logistic
   , perceptron
   , freePerceptron
-  , nextLayer
   , Neuron
   , quadraticCost
   ) where
@@ -27,11 +26,6 @@ freePerceptron :: Neuron
 freePerceptron ws b as = s - b
   where
     s = sum $ zipWith (*) ws as
-
-nextLayer :: Neuron -> Activations -> [Weights] -> [Bias] -> Activations
-nextLayer pfn as wss bs = foldr op [] $ zip wss bs
-  where
-    op (ws, b) acc = pfn ws b as : acc
 
 quadraticCost :: [Double] -> Activations -> Double
 quadraticCost ys as = ss / 2.0

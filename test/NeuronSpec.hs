@@ -27,18 +27,21 @@ spec = do
       let b = 0.0
       property $ \as -> perceptron ws b as `shouldBe` 0.5
   describe "freePerceptron" $ do
+    let ws = [0.0]
+    let b = 0.0
+    let as = [0.0]
     context "singleton weights and activations" $ do
       it "be 0.0 for all zeros" $ do
-        let ws = [0.0]
-        let b = 0.0
-        let as = [0.0]
+        --let ws = [0.0]
+        --let b = 0.0
+        --let as = [0.0]
         freePerceptron ws b as `shouldBe` 0.0
       it "be 0.0 for all zero weights and 0.0 bias" $ do
-        let ws = [0.0]
-        let b = 0.0
+        --let ws = [0.0]
+        --let b = 0.0
         property $ \as -> freePerceptron ws b as `shouldBe` 0.0
       it "be -b for all zero weights" $ do
-        let ws = [0.0]
+        --let ws = [0.0]
         let as = [1.0]
         property $ \b -> freePerceptron ws b as `shouldBe` -b
     context "length-2 weights and activations" $ do
@@ -51,18 +54,6 @@ spec = do
         let ws = [0.0, 0.0]
         let as = [fromIntegral a | a <- [1 .. 2]]
         property $ \b -> freePerceptron ws b as `shouldBe` -b
-  describe "nextLayer" $ do
-    it "plays nice" $ do
-      let as = [1.0, 2.0]
-      let wss = [[1.0, 2.0], [3.0, 4.0]]
-      let bs = [5.0, 6.0]
-      nextLayer (freePerceptron) as wss bs `shouldBe` [0.0, 5.0]
-  describe "nextLayer" $ do
-    it "plays nice" $ do
-      let as = [1.0, 2.0]
-      let wss = [[1.0, 2.0], [3.0, 4.0]]
-      let bs = [5.0, 6.0]
-      nextLayer (freePerceptron) as wss bs `shouldBe` [0.0, 5.0]
   describe "quadraticCost" $ do
     it "find zero cost when expected = rcvd" $ do
       let as = [1.0, 2.0]
