@@ -1,5 +1,6 @@
 module Neuron
   ( logistic
+  , logisticPrime
   , perceptron
   , freePerceptron
   , Neuron
@@ -18,6 +19,11 @@ logisticFull max k x0 x = max / d
 
 logistic :: Double -> Double
 logistic x = logisticFull 1.0 1.0 0.0 x
+
+logisticPrime :: Double -> Double
+logisticPrime x = enegx / (1 + enegx) ** 2.0
+  where
+    enegx = exp $ -1.0 * x
 
 perceptron :: Neuron
 perceptron ws b as = logistic $ freePerceptron ws b as
