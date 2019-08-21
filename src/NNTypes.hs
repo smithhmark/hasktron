@@ -5,15 +5,19 @@ module NNTypes
   , Biases
   , Activation
   , Activations
+  , Layer(..)
   ) where
 
 type Weight = Double
+
 type Activation = Double
 
 type Weights = [Double]
+
 type Activations = [Double]
 
 type Bias = Double
+
 type Biases = [Double]
 
 data Layer = Layer
