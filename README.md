@@ -35,5 +35,6 @@ $ hlint <filename>
 # references
 for those looking for an overview of ANN and Backpropagation, I like [this series of videos]( https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi)
 
-[Here is a detailed example:](https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/)
+[Here](https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/) is a detailed example, using numbers.
+
 
