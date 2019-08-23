@@ -1,6 +1,8 @@
 module BackProp
   ( learnFromExample
   , forwardPhase
+  , outputNeuronGradient
+  , dCost
   ) where
 
 import           LearningZipper
@@ -43,4 +45,14 @@ fwdEvalLayer layer@LLayer {weights = wss, biases = bs} is =
       where
         z = freePerceptron ws b is
 
+dCost :: NNT.Activation -> Double -> Double
+dCost o x = o - x
 
+outputNeuronGradient ::
+     NNT.Activation -> Double -> NNT.Activations -> (NNT.Bias, NNT.Weights)
+outputNeuronGradient o e ps = (deltaB, deltaWs)
+  where
+    dC_do = dCost o e
+    do_dz = logisticPrime o
+    deltaB = dC_do * do_dz
+    deltaWs = map (\p -> deltaB * p) ps
