@@ -2,6 +2,7 @@ module BackProp
   ( learnFromExample
   , forwardPhase
   , outputNeuronGradient
+  , outputLayerGradient
   , dCost
   ) where
 
@@ -56,3 +57,8 @@ outputNeuronGradient o e ps = (deltaB, deltaWs)
     do_dz = logisticPrime o
     deltaB = dC_do * do_dz
     deltaWs = map (\p -> deltaB * p) ps
+
+outputLayerGradient :: LLayer -> LLayer -> [Double] -> NNT.Layer
+outputLayerGradient l p ts = NNT.Layer { NNT.weights = map snd deltas, NNT.biases= map fst deltas }
+  where
+          deltas = map (\ (o, t) -> outputNeuronGradient o t (acts p) ) $ zip (acts l) ts

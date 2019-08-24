@@ -50,3 +50,24 @@ spec = do
         normalize [dB] `shouldBe` normalize [0.1384985616]
       it "calculated the correct weights" $ do
         normalize dWs `shouldBe` normalize [0.08216704056, 0.08266762785]
+  describe "outputLayerGradient" $ do
+    it "computes the gradient across the whole final layer" $ do
+      let oLayer =
+            LLayer
+              { weights = [[0.4, 0.45], [0.5, 0.55]]
+              , biases = [0, 6, 0.6]
+              , outs =
+                  [(1.105905967, 0.7513650696), (1.224921404, 0.7729284653)]
+              }
+      let pLayer =
+            LLayer
+              { weights = [[0.15, 0.2], [0.25, 0.3]]
+              , biases = [0.35, 0.35]
+              , outs = [(0.3775, 0.5932699921), (0.3925, 0.5968843783)]
+              }
+      let targets = [0.01, 0.99]
+      let biasDs = [0.1384985616, -0.03809823652]
+      let weightDs =
+            [[0.08216704056, 0.08266762785], [-0.02260254048, -0.02274024222]]
+      let ol = outputLayerGradient oLayer pLayer targets
+      normalize (NNT.biases ol) `shouldBe` normalize biasDs
