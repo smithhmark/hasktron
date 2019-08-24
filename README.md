@@ -19,12 +19,13 @@ $ hlint <filename>
   * Feed Forward evaluation
   * Backwards Propegation learning
   * use of a zipper-style data structure for moving between layers
-  * exploration of additional NN topologies
+  * neuron typeclass
 #### Medium goals:
   * solution (and performance profiling) of some trivial problems, eg
     * hand written numeral recognition
   * separation of NN code from application
   * share code publicly
+  * exploration of additional NN topologies
 #### Longer term:
   * use of genetic programming/genetic Algorithms to explore nn-topologies
   * exploration of performant implementations
