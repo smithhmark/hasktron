@@ -71,3 +71,30 @@ spec = do
             [[0.08216704056, 0.08266762785], [-0.02260254048, -0.02274024222]]
       let ol = outputLayerGradient oLayer pLayer targets
       normalize (NNT.biases ol) `shouldBe` normalize biasDs
+  describe "hiddenNeuronGradient" $ do
+    context "computes bias and weight gradients for a hidden neuron" $ do
+      let activation = 0.5932699921
+      let inputs = [0.05, 0.1]
+      let oldDeltas = [0.1384985616, -0.03809823652]
+      let weightsOut = [0.4, 0.5]
+      let (newDelta, weightGs) =
+            hiddenNeuronGradient activation inputs oldDeltas weightsOut
+      it "gets correct bias gradient" $ do normalize [newDelta] `shouldBe` normalize [0.008771354689]
+      it "gets correct weight gradients" $ do
+        normalize weightGs `shouldBe` normalize [0.0004385677345, 0.0008771354689]
+  describe "hiddenLayerGradient" $ do
+    context "computes the gradient across a whole hidden layer" $ do
+      let inputs = [0.05, 0.1]
+      let oldDeltas = [0.1384985616, -0.03809823652]
+      let wss = [[0.4,0.45]
+                ,[ 0.5,0.55]]
+      let os = [0.5932699921, 0.5968843783]
+
+      let gs = hiddenLayerGradient inputs oldDeltas wss os
+      let (bgs, wgss) = unzip gs
+      let expectedWGss = [[0.0004385677345,0.0008771354689]
+                         ,[0.0004977127353,0.000995425470]]
+      it "gets bias gradients correct" $ do
+        normalize bgs `shouldBe` normalize [0.008771354689, 0.009954254705]
+      it "gets bias gradients correct" $ do
+        map normalize wgss `shouldBe` map normalize expectedWGss
