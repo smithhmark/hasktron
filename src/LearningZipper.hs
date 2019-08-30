@@ -13,6 +13,8 @@ module LearningZipper
   , goShallower
   , procLayerD
   , cursor
+  , scursor
+  , dcursor
   ) where
 
 import qualified NNTypes as NNT
@@ -92,3 +94,9 @@ procLayerD nz@NetZip {deeper = l:ls, shallower = ss} f =
 
 cursor :: NetZip -> LLayer
 cursor NetZip{deeper = l:ls} = l
+
+scursor :: NetZip -> LLayer
+scursor NetZip{shallower = l:ls} = l
+
+dcursor :: NetZip -> LLayer
+dcursor NetZip{deeper = l1:l2:ls} = l2
