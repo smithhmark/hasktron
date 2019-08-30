@@ -1,5 +1,6 @@
 module Neuron
   ( logistic
+  , softmax
   , logisticPrime
   , perceptron
   , freePerceptron
@@ -16,6 +17,12 @@ logisticFull max k x0 x = max / d
   where
     e = exp (-1 * k * (x - x0))
     d = 1 + e
+
+softmax :: [Double] -> [Double]
+softmax xs = map (/ s) es
+  where
+    es = map exp xs
+    s = sum es
 
 logistic :: Double -> Double
 logistic x = logisticFull 1.0 1.0 0.0 x

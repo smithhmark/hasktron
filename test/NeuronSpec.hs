@@ -16,6 +16,22 @@ spec = do
     it "logistic of 0 should be .5" $ do logistic 0 `shouldBe` 0.5
     it "transforms values to the range (-1, 1)" $
       property $ \x -> logistic x <= 1 && logistic x >= -1
+  describe "softmax" $ do
+    it "works for the wikipedia example" $ do
+      let is = [1.0, 2.0, 3.0, 4.0, 1.0, 2.0, 3.0]
+      let expt =
+            [ 0.02364054
+            , 0.06426166
+            , 0.1746813
+            , 0.474833
+            , 0.02364054
+            , 0.06426166
+            , 0.1746813
+            ]
+      map (truncate . (* 10000)) (softmax is) `shouldBe`
+        map (truncate . (* 10000)) expt
+    it "transforms values to the range (-1, 1)" $
+      property $ \x -> logistic x <= 1 && logistic x >= -1
   describe "perceptron" $ do
     it "be .5 for all zeros" $ do
       let ws = [0.0]
@@ -31,17 +47,18 @@ spec = do
     let b = 0.0
     let as = [0.0]
     context "singleton weights and activations" $ do
-      it "be 0.0 for all zeros" $ do
+      it "be 0.0 for all zeros" $
         --let ws = [0.0]
         --let b = 0.0
         --let as = [0.0]
-        freePerceptron ws b as `shouldBe` 0.0
-      it "be 0.0 for all zero weights and 0.0 bias" $ do
+       do freePerceptron ws b as `shouldBe` 0.0
+      it "be 0.0 for all zero weights and 0.0 bias" $
         --let ws = [0.0]
         --let b = 0.0
-        property $ \as -> freePerceptron ws b as `shouldBe` 0.0
-      it "be -b for all zero weights" $ do
+       do property $ \as -> freePerceptron ws b as `shouldBe` 0.0
+      it "be -b for all zero weights" $
         --let ws = [0.0]
+       do
         let as = [1.0]
         property $ \b -> freePerceptron ws b as `shouldBe` -b
     context "length-2 weights and activations" $ do
