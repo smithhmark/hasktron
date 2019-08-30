@@ -34,7 +34,7 @@ perceptron :: Neuron
 perceptron ws b as = logistic $ freePerceptron ws b as
 
 freePerceptron :: Neuron
-freePerceptron ws b as = s - b
+freePerceptron ws b as = s + b
   where
     s = sum $ zipWith (*) ws as
 

@@ -6,6 +6,8 @@ module BackProp
   , hiddenNeuronGradient
   , hiddenLayerGradient
   , dCost
+  , gradientFromExample
+  , evalBackwards
   ) where
 
 import           Data.List      (transpose)
@@ -15,17 +17,24 @@ import qualified NNTypes        as NNT
 
 type Network = [NNT.Layer]
 
-type NetworkDiff = Network
+type NetworkDiff = [NNT.Layer]
 
 type Inputs = [Double]
 
 type Targets = [Double]
 
-learningZipperFromNetwork :: Network -> NetZip
-learningZipperFromNetwork = fromList
-
-learnFromExample :: Network -> Inputs -> Targets -> NetworkDiff
+learnFromExample ::
+     Network
+  -> Inputs
+  -> Float -- ^ mu, learning rate
+  -> Targets
+  -> NetworkDiff
 learnFromExample = undefined
+
+gradientFromExample :: Network -> Inputs -> Targets -> NetworkDiff
+gradientFromExample net is ts = evalBackwards nz1 is ts 
+        where nz = fromList net
+              nz1 = forwardPhase nz is
 
 -- | forwardPhase computes the feed forward phase of network
 forwardPhase :: NetZip -> Inputs -> NetZip
@@ -77,15 +86,16 @@ outputNeuronGradient o t ps = (deltaB, deltaWs)
     deltaB = dC_do * do_dz
     deltaWs = map (\p -> deltaB * p) ps
 
-outputLayerGradient :: LLayer -> LLayer -> [Double] -> NNT.Layer
+outputLayerGradient ::
+     LLayer -- ^ the output layer
+  -> LLayer -- ^ the prior layer
+  -> [Double] -- ^ the output targets
+  -> NNT.Layer
 outputLayerGradient l p ts =
   NNT.Layer {NNT.weights = map snd deltas, NNT.biases = map fst deltas}
   where
     deltas =
       map (\(o, t) -> outputNeuronGradient o t (acts p)) $ zip (acts l) ts
-
-evalBackwards :: NetZip -> Inputs -> Targets -> NetworkDiff
-evalBackwards nz is ts = evalBackwards' (end nz) is ts []
 
 -- | compute the gradients for a single hidden neuron
 hiddenNeuronGradient ::
@@ -105,13 +115,31 @@ hiddenLayerGradient ::
   -> [Double] -- ^ the deltas from the deeper level
   -> [NNT.Weights] -- ^ the weights connecting this layer to the deeper layer
   -> NNT.Activations
-  -> [(NNT.Bias, NNT.Weights)]
-hiddenLayerGradient is ds wss os = foldr op [] $ zip os wsst
+  -> NNT.Layer
+hiddenLayerGradient is ds wss os =
+  NNT.Layer {NNT.biases = bds, NNT.weights = wdss}
   where
     wsst = transpose wss
     op (o, ws) acc = hiddenNeuronGradient o is ds ws : acc
+    (bds, wdss) = unzip . foldr op [] $ zip os wsst
 
-evalBackwards' :: NetZip -> Inputs -> Targets -> NetworkDiff -> NetworkDiff
-evalBackwards' nz is ts ac
-  | beginp nz = ac
-  | otherwise = undefined
+evalBackwards' :: NetZip -> Inputs -> NetworkDiff -> NetworkDiff
+evalBackwards' nz is acc@(lg:_)
+  | beginp nz = hiddenLayerGradient is deltas wss as : acc
+  | otherwise =
+    let pas = acts $ scursor nz
+        nxtZ = goShallower nz
+        grad = hiddenLayerGradient pas deltas wss as
+     in evalBackwards' nxtZ is (grad : acc)
+  where
+    deltas = NNT.biases lg
+    wss = weights $ dcursor nz
+    as = acts $ cursor nz
+
+evalBackwards :: NetZip -> Inputs -> Targets -> NetworkDiff
+evalBackwards nz is ts = evalBackwards' (goShallower nz1) is [olg]
+  where
+    nz1 = goShallower $ end nz
+    ol = cursor nz1
+    pl = scursor nz1
+    olg = outputLayerGradient ol pl ts

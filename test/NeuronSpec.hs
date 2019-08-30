@@ -56,11 +56,11 @@ spec = do
         --let ws = [0.0]
         --let b = 0.0
        do property $ \as -> freePerceptron ws b as `shouldBe` 0.0
-      it "be -b for all zero weights" $
+      it "be b for all zero weights" $
         --let ws = [0.0]
        do
         let as = [1.0]
-        property $ \b -> freePerceptron ws b as `shouldBe` -b
+        property $ \b -> freePerceptron ws b as `shouldBe` b
     context "length-2 weights and activations" $ do
       it "be 0.0 for zero weights and bias" $ do
         let ws = [0.0, 0.0]
@@ -70,7 +70,7 @@ spec = do
       it "be -b for zero weights" $ do
         let ws = [0.0, 0.0]
         let as = [fromIntegral a | a <- [1 .. 2]]
-        property $ \b -> freePerceptron ws b as `shouldBe` -b
+        property $ \b -> freePerceptron ws b as `shouldBe` b
   describe "quadraticCost" $ do
     it "find zero cost when expected = rcvd" $ do
       let as = [1.0, 2.0]
